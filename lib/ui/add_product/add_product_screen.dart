@@ -3,7 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:seven_learn_exercise_three/ui/widget/app_icon_button.dart';
 
 class AddProductScreen extends StatelessWidget {
-  const AddProductScreen({super.key});
+  AddProductScreen({super.key});
+
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController brandController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +34,39 @@ class AddProductScreen extends StatelessWidget {
           children: [
             Text('Product Name', style: titleTextStyle),
             space9,
-            const TextField(),
+            TextField(
+              textInputAction: TextInputAction.next,
+              controller: titleController,
+            ),
             space18,
             Text('Product Price', style: titleTextStyle),
             space9,
-            const TextField(),
+            TextField(
+              controller: priceController,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.number,
+            ),
             space18,
             Text('Product Description', style: titleTextStyle),
             space9,
-            const TextField(),
+            TextField(
+              controller: descriptionController,
+              textInputAction: TextInputAction.next,
+            ),
             space18,
             Text('Product Brand', style: titleTextStyle),
             space9,
-            const TextField(),
+            TextField(
+              controller: brandController,
+              textInputAction: TextInputAction.next,
+            ),
             space18,
             Text('Product Category', style: titleTextStyle),
             space9,
-            const TextField(),
+            TextField(
+              controller: categoryController,
+              textInputAction: TextInputAction.done,
+            ),
             space18,
           ],
         ),

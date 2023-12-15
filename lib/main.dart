@@ -5,7 +5,7 @@ import 'package:seven_learn_exercise_three/ui/splash/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  initAppModule();
+  initDependencies();
   runApp(const MyApp());
 }
 

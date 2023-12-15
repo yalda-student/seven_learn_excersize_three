@@ -17,12 +17,12 @@ class ProductEntity {
         title = json['title'],
         description = json['description'],
         price = json['price'],
-        rating = json['rating'] + 0.0, // to convert int to double
+        rating = (json['rating'] ?? 0) + 0.0, // to convert int to double
         brand = json['brand'],
         category = json['category'],
-        thumbnail = json['thumbnail'],
+        thumbnail = json['thumbnail'] ?? '',
         images =
-            (json['images'] as List).map((item) => item as String).toList();
+            ((json['images'] ?? []) as List).map((item) => item as String).toList();
 
   @override
   String toString() {

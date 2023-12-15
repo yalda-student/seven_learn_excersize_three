@@ -1,18 +1,19 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:seven_learn_exercise_three/common/di.dart';
+import 'package:seven_learn_exercise_three/common/constants.dart';
 import 'package:seven_learn_exercise_three/common/exception.dart';
 import 'package:seven_learn_exercise_three/data/product.dart';
 
 abstract class ICategoryDataSource {
   Future<List<String>> getAllCategories();
 
-  Future<List<ProductEntity>> getProductsOfCategory(String category);
+  Future<List<ProductEntity>> getProductsOfCategory(String category,
+      {int skip = 0, int limit = Constants.productLimit});
 }
 
 class RemoteCategoryDataSource implements ICategoryDataSource {
-  final _dio = di.get<Dio>();
+  final Dio _dio;
+
+  RemoteCategoryDataSource(this._dio);
 
   @override
   Future<List<String>> getAllCategories() async {
@@ -26,10 +27,14 @@ class RemoteCategoryDataSource implements ICategoryDataSource {
   }
 
   @override
-  Future<List<ProductEntity>> getProductsOfCategory(String category) async {
-    final response = await _dio.get('/products/category/$category');
+  Future<List<ProductEntity>> getProductsOfCategory(String category,
+      {int skip = 0, int limit = Constants.productLimit}) async {
+    final response =
+        await _dio.get('/products/category/$category', queryParameters: {
+      'skip': skip,
+      'limit': limit,
+    });
     if (response.statusCode! == 200) {
-      log(response.data.toString());
       List data = response.data['products'];
       return data
           .map<ProductEntity>((json) => ProductEntity.fromJson(json))

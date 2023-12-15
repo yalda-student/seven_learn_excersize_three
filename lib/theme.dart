@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-ThemeData lightTheme = ThemeData(
+ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
     appBarTheme: AppBarTheme(
         elevation: 0,
@@ -20,6 +20,11 @@ ThemeData lightTheme = ThemeData(
     colorScheme: const ColorScheme.light(
       primary: Color(0xff011A70),
       background: Colors.white,
+    ),
+    textTheme: TextTheme(
+      bodySmall: GoogleFonts.montserrat(color: const Color(0xff7E7777)),
+      labelLarge: GoogleFonts.montserrat(
+          color: Colors.black, fontWeight: FontWeight.bold),
     ));
 
 final _textFieldBorder = OutlineInputBorder(
