@@ -5,8 +5,8 @@ class PageSlideTransition extends PageRouteBuilder {
 
   PageSlideTransition(this.page)
       : super(
-            transitionDuration: const Duration(milliseconds: 1500),
-            reverseTransitionDuration: const Duration(milliseconds: 1500),
+            transitionDuration: const Duration(seconds: 1),
+            reverseTransitionDuration: const Duration(seconds: 1),
             pageBuilder: (context, animation, secondaryAnimation) => page,
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
@@ -20,4 +20,3 @@ class PageSlideTransition extends PageRouteBuilder {
               );
             });
 }
-

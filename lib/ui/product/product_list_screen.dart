@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:seven_learn_exercise_three/common/di.dart';
 import 'package:seven_learn_exercise_three/data/product.dart';
-import 'package:seven_learn_exercise_three/ui/add_product/add_product_screen.dart';
 import 'package:seven_learn_exercise_three/ui/category_products/category_products_screen.dart';
+import 'package:seven_learn_exercise_three/ui/add_product/add_product_screen.dart';
 import 'package:seven_learn_exercise_three/ui/product/bloc/product_list_bloc.dart';
 import 'package:seven_learn_exercise_three/ui/util/page_slide_transition.dart';
 import 'package:seven_learn_exercise_three/ui/widget/app_icon_button.dart';
@@ -13,28 +15,41 @@ import 'package:seven_learn_exercise_three/ui/widget/product_item.dart';
 import 'package:seven_learn_exercise_three/ui/widget/state/error_state.dart';
 import 'package:seven_learn_exercise_three/ui/widget/state/linear_loading_state.dart';
 
-class ProductListScreen extends StatelessWidget {
+class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
 
   @override
+  State<ProductListScreen> createState() => _ProductListScreenState();
+}
+
+class _ProductListScreenState extends State<ProductListScreen> {
+  late final ProductListBloc? productBloc;
+
+  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Products'),
-          leading: AppIconButton(
-              onTap: () {}, icon: SvgPicture.asset('assets/images/Menu.svg')),
-          actions: [
-            AppIconButton(
-                onTap: () => Navigator.of(context)
-                    .push(PageSlideTransition(AddProductScreen())),
-                icon: SvgPicture.asset('assets/images/Add.svg'))
-          ],
-        ),
-        body: BlocProvider(
-          create: (context) =>
-              ProductListBloc(di(), di())..add(ProductListInit()),
-          child: NestedScrollView(
+    return BlocProvider<ProductListBloc>(
+      create: (context) {
+        productBloc = ProductListBloc(di(), di())..add(ProductListInit());
+        return productBloc!;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Products'),
+            leading: AppIconButton(
+                onTap: () {}, icon: SvgPicture.asset('assets/images/Menu.svg')),
+            actions: [
+              AppIconButton(
+                  onTap: () async {
+                    final newProduct = await Navigator.of(context)
+                        .push(PageSlideTransition(const AddProductScreen()));
+                    log(newProduct.toString());
+                    productBloc!.add(ProductListAddNewProduct(newProduct));
+                  },
+                  icon: SvgPicture.asset('assets/images/Add.svg'))
+            ],
+          ),
+          body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) =>
                 [const SliverToBoxAdapter(child: SizedBox())],
             physics: const BouncingScrollPhysics(),

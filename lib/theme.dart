@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-ThemeData get lightTheme => ThemeData(
+ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     appBarTheme: AppBarTheme(
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         titleTextStyle: GoogleFonts.montserrat(
           fontWeight: FontWeight.bold,
@@ -15,7 +16,7 @@ ThemeData get lightTheme => ThemeData(
       enabledBorder: _textFieldBorder,
       focusedBorder: _textFieldBorder,
       border: _textFieldBorder,
-      contentPadding: EdgeInsets.zero,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
     ),
     colorScheme: const ColorScheme.light(
       primary: Color(0xff011A70),

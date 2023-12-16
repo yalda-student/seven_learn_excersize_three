@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seven_learn_exercise_three/common/di.dart';
 import 'package:seven_learn_exercise_three/data/product.dart';
 import 'package:seven_learn_exercise_three/ui/category_products/bloc/category_products_bloc.dart';
+import 'package:seven_learn_exercise_three/ui/widget/app_icon_button.dart';
 import 'package:seven_learn_exercise_three/ui/widget/product_item.dart';
 import 'package:seven_learn_exercise_three/ui/widget/state/linear_loading_state.dart';
 
@@ -18,6 +19,9 @@ class CategoryProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(categoryName),
         automaticallyImplyLeading: false,
+        leading: AppIconButton(
+            onTap: () => Navigator.pop(context),
+            icon: const Icon(Icons.keyboard_arrow_left_rounded)),
       ),
       body: BlocProvider<CategoryProductsBloc>(
         create: (context) =>
@@ -67,7 +71,7 @@ class _ProductListState extends State<_ProductList> {
     return ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemCount: widget.products.length,
         itemBuilder: (context, index) =>
             ProductItem(productEntity: widget.products[index]));

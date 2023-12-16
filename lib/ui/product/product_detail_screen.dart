@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seven_learn_exercise_three/common/extensions.dart';
 import 'package:seven_learn_exercise_three/data/product.dart';
@@ -18,51 +19,49 @@ class ProductDetailScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
             body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  flexibleSpace: _AppBar(imageList: productEntity.images),
-                  expandedHeight: 250,
-                  automaticallyImplyLeading: false,
+      slivers: [
+        SliverAppBar(
+          flexibleSpace: _AppBar(imageList: productEntity.images),
+          expandedHeight: 250,
+          automaticallyImplyLeading: false,
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          sliver: SliverList(
+              delegate: SliverChildListDelegate([
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  productEntity.title,
+                  style: GoogleFonts.montserrat(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  sliver: SliverList(
-                      delegate: SliverChildListDelegate([
-                        Row(
-                          children: [
-                            Text(
-                              productEntity.title,
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(width: 10)
-                          ],
-                        ),
-                        const SizedBox(height: 19),
-                        Text(
-                          productEntity.price.dollar,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodySmall,
-                        ),
-                        const SizedBox(height: 29),
-                        Text(
-                          productEntity.description,
-                          style: GoogleFonts.montserrat(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 63),
-                        Row(
-                          children: [
-                            CategoryItem(title: productEntity.category),
-                            CategoryItem(title: productEntity.brand),
-                          ],
-                        )
-                      ])),
-                )
+                _RatingWidget(rating: productEntity.rating),
               ],
-            )));
+            ),
+            const SizedBox(height: 19),
+            Text(
+              productEntity.price.dollar,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 29),
+            Text(
+              productEntity.description,
+              style: GoogleFonts.montserrat(
+                  fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 63),
+            Row(
+              children: [
+                CategoryItem(title: productEntity.category),
+                CategoryItem(title: productEntity.brand),
+              ],
+            )
+          ])),
+        )
+      ],
+    )));
   }
 }
 
@@ -80,9 +79,7 @@ class _AppBarState extends State<_AppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme
-        .of(context)
-        .colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Stack(
       clipBehavior: Clip.none,
@@ -91,13 +88,12 @@ class _AppBarState extends State<_AppBar> {
       children: [
         CarouselSlider.builder(
           itemCount: widget.imageList.length,
-          itemBuilder: (context, index, realIndex) =>
-              CachedNetworkImage(
-                imageUrl: widget.imageList[realIndex],
-                fit: BoxFit.cover,
-                progressIndicatorBuilder: (context, url, progress) =>
+          itemBuilder: (context, index, realIndex) => CachedNetworkImage(
+            imageUrl: widget.imageList[realIndex],
+            fit: BoxFit.cover,
+            progressIndicatorBuilder: (context, url, progress) =>
                 const LoadingState(),
-              ),
+          ),
           options: CarouselOptions(
               viewportFraction: 1,
               enableInfiniteScroll: false,
@@ -110,9 +106,9 @@ class _AppBarState extends State<_AppBar> {
           bottom: 2,
           child: widget.imageList.length > 1
               ? _Indicator(
-              colorScheme: colorScheme,
-              activeIndex: activeIndex,
-              imageCount: widget.imageList.length)
+                  colorScheme: colorScheme,
+                  activeIndex: activeIndex,
+                  imageCount: widget.imageList.length)
               : const SizedBox(),
         )
       ],
@@ -160,5 +156,23 @@ class _Indicator extends StatelessWidget {
             dotWidth: 5),
       ),
     );
+  }
+}
+
+class _RatingWidget extends StatelessWidget {
+  const _RatingWidget({required this.rating});
+
+  final double rating;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      SvgPicture.asset('assets/images/Star.svg'),
+      const SizedBox(width: 2),
+      Text(
+        rating.toString(),
+        style: Theme.of(context).textTheme.bodySmall,
+      )
+    ]);
   }
 }

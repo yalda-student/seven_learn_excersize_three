@@ -47,6 +47,9 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
         } on ServerException catch (e) {
           log(e.toString());
         }
+      } else if (event is ProductListAddNewProduct) {
+        productList.insert(0, event.product);
+        emit(ProductListSuccessProduct(productList));
       }
     });
   }

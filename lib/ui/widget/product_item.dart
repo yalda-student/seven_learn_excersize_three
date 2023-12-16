@@ -78,6 +78,7 @@ class _ProductThumbnail extends StatelessWidget {
         imageUrl: imageUrl,
         width: 110,
         height: 110,
+        errorWidget: (context, url, error) => const Icon(Icons.error),
         progressIndicatorBuilder: (context, url, progress) =>
             const LoadingState(),
       ),
